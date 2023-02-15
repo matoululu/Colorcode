@@ -1,0 +1,24 @@
+{
+  "name": "blast-off",
+  "version": "2.1.0",
+  "description": "A basic template and project for static sites",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build --public-url ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoululu/blast-off.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matoululu/blast-off/issues"
+  },
+  "homepage": "https://github.com/matoululu/blast-off#readme",
+  "devDependencies": {
+    "@parcel/transformer-less": "^2.8.0",
+    "parcel": "latest"
+  }
+}

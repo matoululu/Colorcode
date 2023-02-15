@@ -1,0 +1,29 @@
+@import 'source/reset';
+@import 'source/variables';
+@import 'source/media-queries';
+@import 'source/basics';
+
+/* Global styling
+----------------------------------------------- */
+
+main {
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 0 0 1.5rem;
+  max-height: 800px;
+}
+
+.hidden {
+  display: none;
+  pointer-events: none;
+}
+
+
+/* Your imports here
+----------------------------------------------- */
+
+@import 'source/game-field';
+@import 'source/input-field';
+@import 'source/popup';
