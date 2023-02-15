@@ -142,6 +142,7 @@ game-field .input--wrong {
 }
 
 input-field {
+  touch-action: manipulation;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 2rem 0 0;
