@@ -3,6 +3,7 @@
 ==============================================================================*/
 
 import { dispatchEvent } from './utils.js';
+import Chance from 'chance';
 
 class GameField extends HTMLElement {
   constructor() {
@@ -12,14 +13,21 @@ class GameField extends HTMLElement {
     this.answerArray = [];
     this.currentTurn = 1;
 
+    // Seed random number generator with date
+    this.date = new Date().toISOString().slice(0, 10);
+    this.chance = new Chance(this.date);
+
     this.init();
   }
 
   init() {
     //generate answer array, 6 random numbers between 1 and 6
     for (let i = 0; i < 4; i++) {
-      this.answerArray.push(Math.floor(Math.random() * 6) + 1);
+      this.answerArray.push(this.chance.integer({min: 1, max: 6}));
     }
+
+    console.log(this.date);
+    console.log(this.answerArray);
 
     window.addEventListener('input:clicked', e => {
       // Add input to current array and display it in this.current, ensure array has a max size of 6
