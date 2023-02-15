@@ -21,8 +21,6 @@ class GameField extends HTMLElement {
       this.answerArray.push(Math.floor(Math.random() * 6) + 1);
     }
 
-    console.log(this.answerArray);
-
     window.addEventListener('input:clicked', e => {
       // Add input to current array and display it in this.current, ensure array has a max size of 6
       if (this.currentArray.length >= 4) this.currentArray.shift();
