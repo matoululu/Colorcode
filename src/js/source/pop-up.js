@@ -7,12 +7,19 @@ import { dispatchEvent } from './utils.js';
 class PopUp extends HTMLElement {
   constructor() {
     super();
-    this.button = this.querySelector('button');
+    this.button = this.querySelector('[data-play]');
+    this.refresh = this.querySelectorAll('[data-refresh]');
     this.popupScreen = this.querySelectorAll('.popup-screen');
 
     this.button.addEventListener('click', () => {
       this.classList.add('hidden');
       dispatchEvent('inputs:enable');
+    });
+
+    this.refresh.forEach(button => {
+      button.addEventListener('click', () => {
+        window.location.reload();
+      });
     });
 
     //listen for game:win and game:lost event

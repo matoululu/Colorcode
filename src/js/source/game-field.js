@@ -52,14 +52,8 @@ class GameField extends HTMLElement {
       this.currentArray = [];
       this.currentTurn+= 1;
 
-
-      // Check for loss
-      if (this.currentTurn == 7) {
-        dispatchEvent('game:lose');
-        return;
-      }
-
       // set new active field
+      if (this.currentTurn == 7) return;
       this.querySelector(`[data-field="${this.currentTurn}"]`).classList.add('active');
     });
   }
@@ -85,7 +79,7 @@ class GameField extends HTMLElement {
     const solutionArray = this.answerArray;
     const currentField = this.querySelector(`[data-field="${this.currentTurn}"]`);
 
-    for(let i=0; i < guessArray.length; i++){
+    for(let i = 0; i < guessArray.length; i++){
       if(guessArray[i] == solutionArray[i]){
         correct += 1;
         currentField.children[i].classList.add('input--correct');
@@ -99,6 +93,11 @@ class GameField extends HTMLElement {
       } else{
         currentField.children[i].classList.add('input--wrong');
       }
+    }
+
+    if (this.currentTurn == 6) {
+      dispatchEvent('game:lose');
+      return;
     }
   }
 }
