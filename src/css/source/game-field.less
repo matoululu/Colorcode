@@ -1,10 +1,12 @@
 game-field {
-  padding: 1rem 0;
+  padding: 1rem 0 0;
   width: 100%;
 
   ul {
     list-style: none;
     font-size: 1.5rem;
+    max-height: 350px;
+    overflow-y: scroll;
   }
 
   li {
@@ -23,10 +25,23 @@ game-field {
   }
 
   .input {
-    width: 40px;
+    width: 25%;
+    max-width: 66.666px;
     height: 40px;
     margin: 0 7.665px;
     border-radius: 5px;
+    position: relative;
+
+    &:after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      position: absolute;
+      top: -9px;
+      right: -9px;
+    }
   }
 
   .input--1 {
@@ -53,15 +68,15 @@ game-field {
     background-color: var(--input6);
   }
 
-  .input--correct {
-    border-bottom: 10px solid lime;
+  .input--correct::after {
+    background-color:  lime;
   }
 
-  .input--close {
-    border-bottom: 10px solid yellow;
+  .input--close::after {
+    background-color: yellow;
   }
 
-  .input--wrong {
-    border-bottom: 10px solid red;
+  .input--wrong::after {
+    background-color: red;
   }
 }

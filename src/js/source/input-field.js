@@ -7,6 +7,7 @@ import { dispatchEvent } from './utils.js';
 class InputField extends HTMLElement {
   constructor() {
     super();
+    this.buttons = this.querySelectorAll('button');
     this.inputs = this.querySelectorAll('[data-input]');
     this.reset = this.querySelector('[data-reset]');
     this.submit = this.querySelector('[data-submit]');
@@ -45,10 +46,34 @@ class InputField extends HTMLElement {
         dispatchEvent('reset:clicked');
       }
     });
+
+    //listen for inputs:disable event
+    window.addEventListener('inputs:disable', () => {
+      this.disableInputs();
+    });
+
+    //listen for inputs:enable event
+    window.addEventListener('inputs:enable', () => {
+      this.enableInputs();
+    });
   }
 
   inputClicked(value) {
     dispatchEvent('input:clicked', value);
+  }
+
+  disableInputs() {
+    this.buttons.forEach(input => {
+      // set disabled attribute
+      input.setAttribute('disabled', true);
+    });
+  }
+
+  enableInputs() {
+    this.buttons.forEach(input => {
+      // remove disabled attribute
+      input.removeAttribute('disabled');
+    });
   }
 }
 

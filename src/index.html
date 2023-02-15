@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Colorcode</title>
+  <title>Colorcodes | Alpha</title>
   <link rel="stylesheet" href="css/styles.less">
   <link rel="shortcut icon" href="favicon.png" type="image/png">
 </head>
 <body>
   <main role="main">
     <game-field>
-      <h1>Colorcode</h1>
+      <h1>Colorcodes</h1>
       <ul>
         <li class="active" data-field="1"></li>
         <li data-field="2"></li>
@@ -19,34 +19,33 @@
         <li data-field="4"></li>
         <li data-field="5"></li>
         <li data-field="6"></li>
-        <li data-field="7"></li>
       </ul>
     </game-field>
     <input-field>
-      <button data-input="1"> </button>
-      <button data-input="2"> </button>
-      <button data-input="3"> </button>
-      <button data-input="4"> </button>
-      <button data-input="5"> </button>
-      <button data-input="6"> </button>
-      <button data-submit>Submit</button>
-      <button data-reset>Reset</button>
+      <button data-button data-input="1" disabled="true"> </button>
+      <button data-button data-input="2" disabled="true"> </button>
+      <button data-button data-input="3" disabled="true"> </button>
+      <button data-button data-input="4" disabled="true"> </button>
+      <button data-button data-input="5" disabled="true"> </button>
+      <button data-button data-input="6" disabled="true"> </button>
+      <button data-button data-submit disabled="true">Submit</button>
+      <button data-button data-reset disabled="true">Reset</button>
     </input-field>
   </main>
   <pop-up>
     <div class="popup-container">
       <div class="popup-screen" data-welcome>
-        <h2>Welcome to Colorcode!</h2>
+        <h2>Welcome to Colorcodes!</h2>
         <p>If it's your first time here I recommend you read the 'How to play' below.</p>
         <br>
         <h3>How to play:</h3>
-        <p>Guess the color pattern within 7 tries.</p>
+        <p>Guess the color pattern within 6 tries.</p>
         <br>
         <ul>
-          <li>&rarr; Each guess must consist of 6 colors (in any combination)</li>
+          <li>&rarr; Each guess must consist of 4 colors (in any combination)</li>
           <li>&rarr; The color tile will be highlighted depending on your guess</li>
-          <li>&rarr; Green highlight signifies the right color in the right order</li>
-          <li>&rarr; Yellow highlight <strong>only</strong> signifies that the color is present in the pattern.</li>
+          <li>&rarr; Green dots signifies the color is in the right location</li>
+          <li>&rarr; Red dots signifies the color does not belong in that position</li>
         </ul>
 
         <button>Begin</button>

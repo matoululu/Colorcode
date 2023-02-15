@@ -17,7 +17,7 @@ class GameField extends HTMLElement {
 
   init() {
     //generate answer array, 6 random numbers between 1 and 6
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 4; i++) {
       this.answerArray.push(Math.floor(Math.random() * 6) + 1);
     }
 
@@ -25,7 +25,7 @@ class GameField extends HTMLElement {
 
     window.addEventListener('input:clicked', e => {
       // Add input to current array and display it in this.current, ensure array has a max size of 6
-      if (this.currentArray.length >= 6) this.currentArray.shift();
+      if (this.currentArray.length >= 4) this.currentArray.shift();
       this.currentArray.push(e.detail);
 
       this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
@@ -37,7 +37,7 @@ class GameField extends HTMLElement {
     });
 
     window.addEventListener('submit:clicked', () => {
-      if (this.currentArray.length < 6) return;
+      if (this.currentArray.length < 4) return;
 
       // Add current array to history array
       this.historyArray.push(this.currentArray);
@@ -52,9 +52,14 @@ class GameField extends HTMLElement {
       this.currentArray = [];
       this.currentTurn+= 1;
 
+
+      // Check for loss
+      if (this.currentTurn == 7) {
+        dispatchEvent('game:lose');
+        return;
+      }
+
       // set new active field
-      console.log(this.currentTurn)
-      if (this.currentTurn > 7) return;
       this.querySelector(`[data-field="${this.currentTurn}"]`).classList.add('active');
     });
   }
@@ -69,9 +74,7 @@ class GameField extends HTMLElement {
 
     array.forEach(input => {
       const span = document.createElement('span');
-
       span.classList.add('input', `input--${input}`);
-
       target.appendChild(span);
     });
   }
@@ -82,33 +85,21 @@ class GameField extends HTMLElement {
     const solutionArray = this.answerArray;
     const currentField = this.querySelector(`[data-field="${this.currentTurn}"]`);
 
-    guessArray.forEach((input, index) => {
-      const guess = Number(input);
-      const solution = solutionArray[index];
-
-      if(guess === solution) {
+    for(let i=0; i < guessArray.length; i++){
+      if(guessArray[i] == solutionArray[i]){
         correct += 1;
-        currentField.children[index].classList.add('input--correct');
+        currentField.children[i].classList.add('input--correct');
 
-        console.log(correct);
-        if(correct === 6) {
-          console.log('')
+        if(correct === 4) {
           dispatchEvent('game:win');
+          return;
         }
-      } else if (solutionArray.includes(guess)) {
-        currentField.children[index].classList.add('input--close');
-      } else {
-        currentField.children[index].classList.add('input--wrong');
+      } else if (solutionArray.indexOf(guessArray[i]) != (-1)) {
+        currentField.children[i].classList.add('input--close');
+      } else{
+        currentField.children[i].classList.add('input--wrong');
       }
-
-      console.log(this.currentTurn)
-
-      if (this.currentTurn <= 7) {
-        dispatchEvent('game:lose');
-      }
-    });
-
-
+    }
   }
 }
 

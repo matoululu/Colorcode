@@ -14,7 +14,11 @@ input-field {
     transition: opacity ease-in-out 0.3s;
     cursor: pointer;
     width: 40px;
-    height: 60px;
+    height: 50px;
+
+    &[disabled="true"] {
+      opacity: 0.3;
+    }
 
     &:hover {
       opacity: 0.7;
