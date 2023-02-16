@@ -49,8 +49,6 @@ class GameField extends HTMLElement {
       this.historyArray.push(this.currentArray);
 
       this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
-      this.querySelector(`[data-field="${this.currentTurn}"]`).classList.remove('active');
-
       // Check if current array is correct
       this.winHandler();
 
@@ -58,9 +56,7 @@ class GameField extends HTMLElement {
       this.currentArray = [];
       this.currentTurn+= 1;
 
-      // set new active field
       if (this.currentTurn == 7) return;
-      this.querySelector(`[data-field="${this.currentTurn}"]`).classList.add('active');
     });
   }
 
