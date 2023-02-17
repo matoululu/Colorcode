@@ -16,32 +16,26 @@ class GameField extends HTMLElement {
     this.list = this.querySelector('ul');
     this.listItems = this.querySelectorAll('li');
     this.currentSliderScrollPos = -20;
-    this.fieldHeight = 62*2;
+    this.fieldHeight = 62;
     this.slideMaxWidth = this.listItems * this.fieldHeight;
 
     // Seed random number generator with date
     this.date = new Date().toISOString().slice(0, 10);
-    this.chance = new Chance(this.date);
+    this.chance;
 
     this.init();
-  }
 
-  init() {
-
-    // Scroll to top
-    this.list.scrollTo(0, 0);
-
-    //generate answer array, 4 random numbers between 1 and 6
-    for (let i = 0; i < 4; i++) {
-      this.answerArray.push(this.chance.integer({min: 1, max: 6}));
-    }
+    // Listen for game:endless event
+    window.addEventListener('game:endless', () => {
+      this.init(true);
+    });
 
     window.addEventListener('input:clicked', e => {
       // Add input to current array and display it in this.current, ensure array has a max size of 6
       if (this.currentArray.length >= 4) this.currentArray.shift();
       this.currentArray.push(e.detail);
 
-      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"] div`));
+      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
     });
 
     window.addEventListener('reset:clicked', () => {
@@ -55,15 +49,29 @@ class GameField extends HTMLElement {
       // Add current array to history array
       this.historyArray.push(this.currentArray);
 
-      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"] div`));
+      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
       // Check if current array is correct
       this.winHandler();
 
       if (this.currentTurn == 11) return;
-
-      // Scroll to next slide every 2 turns
-      if (this.currentTurn % 2 == 0 && this.currentTurn != 2) this.scrollNext();
     });
+  }
+
+  init(random = null) {
+    this.clear();
+
+    if (random) {
+      this.chance = new Chance();
+    } else {
+      this.chance = new Chance(this.date);
+    }
+    // Scroll to top
+    this.list.scrollTo(0, 0);
+
+    //generate answer array, 4 random numbers between 1 and 6
+    for (let i = 0; i < 4; i++) {
+      this.answerArray.push(this.chance.integer({min: 1, max: 6}));
+    }
   }
 
   inputClicked(value) {
@@ -71,8 +79,11 @@ class GameField extends HTMLElement {
   }
 
   displayArray(array, target) {
-    // Clear current field
-    target.innerHTML = '';
+    console.log(target)
+    // remove all children from target
+    while (target.firstChild) {
+      target.removeChild(target.firstChild);
+    }
 
     array.forEach(input => {
       const span = document.createElement('span');
@@ -87,7 +98,7 @@ class GameField extends HTMLElement {
     let resultArray = [];
     const guessArray = this.currentArray;
     const solutionArray = this.answerArray;
-    const currentField = this.querySelector(`[data-field="${this.currentTurn}"]`);
+    const currentField = this.querySelector(`[data-field="${this.currentTurn}"]`).parentNode;
 
     for(let i = 0; i < guessArray.length; i++){
       if(guessArray[i] == solutionArray[i]){
@@ -124,6 +135,9 @@ class GameField extends HTMLElement {
       return;
     }
 
+    // Scroll to next slide every 2 turns
+    if (this.currentTurn != 1) this.scrollNext();
+
     // Reset current array
     this.currentArray = [];
     this.currentTurn+= 1;
@@ -135,6 +149,31 @@ class GameField extends HTMLElement {
 
     this.currentSliderScrollPos = newSliderScrollPos;
     this.list.scrollTo(0, newSliderScrollPos);
+  }
+
+  clear() {
+    this.currentArray = [];
+    this.historyArray = [];
+    this.answerArray = [];
+    this.currentTurn = 1;
+
+    // remove span from list items
+    this.listItems.forEach(item => {
+      const span = item.querySelectorAll('span');
+      span.forEach(span => {
+        span.remove();
+      });
+
+      const div = item.querySelector('div');
+      while (div.firstChild) {
+        div.removeChild(div.firstChild);
+      }
+    });
+
+    // reset event listeners
+    window.removeEventListener('input:clicked', () => {});
+    window.removeEventListener('reset:clicked', () => {});
+    window.removeEventListener('submit:clicked', () => {});
   }
 }
 

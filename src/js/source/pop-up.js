@@ -18,7 +18,9 @@ class PopUp extends HTMLElement {
 
     this.refresh.forEach(button => {
       button.addEventListener('click', () => {
-        window.location.reload();
+        dispatchEvent('game:endless');
+        this.classList.add('hidden');
+        dispatchEvent('inputs:enable');
       });
     });
 

@@ -13,16 +13,16 @@
     <game-field>
       <h1>Colorcodes</h1>
       <ul>
-        <li class="active" data-field="1"><div></div></li>
-        <li data-field="2"><div></div></li>
-        <li data-field="3"><div></div></li>
-        <li data-field="4"><div></div></li>
-        <li data-field="5"><div></div></li>
-        <li data-field="6"><div></div></li>
-        <li data-field="7"><div></div></li>
-        <li data-field="8"><div></div></li>
-        <li data-field="9"><div></div></li>
-        <li data-field="10"><div></div></li>
+        <li><div data-field="1"></div></li>
+        <li><div data-field="2"></div></li>
+        <li><div data-field="3"></div></li>
+        <li><div data-field="4"></div></li>
+        <li><div data-field="5"></div></li>
+        <li><div data-field="6"></div></li>
+        <li><div data-field="7"></div></li>
+        <li><div data-field="8"></div></li>
+        <li><div data-field="9"></div></li>
+        <li><div data-field="10"></div></li>
       </ul>
     </game-field>
     <input-field>
@@ -54,12 +54,13 @@
       <div class="hidden popup-screen" data-context="win">
         <h2>Congratulations</h2>
         <p>You've solved the daily colorcode! Come back tomorrow and play again!</p>
+        <button data-refresh>Play endless mode</button>
       </div>
       <div class="hidden popup-screen" data-context="lose">
         <h2>Sorry :(</h2>
         <p>You didn't complete the colorcode this time, try again tomorrow!</p>
         <p>Alternatively, you're welcome to try again.</p>
-        <button data-refresh>Play again</button>
+        <button data-refresh>Play endless mode</button>
       </div>
     </div>
   </pop-up>
