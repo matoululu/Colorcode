@@ -79,29 +79,36 @@ game-field {
   .icon {
     position: absolute;
     top: 0;
-    right: 0;
-    width: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
     height: 10px;
-    border-radius: 50%;
+
+    &:after {
+      content: '';
+      top: 0;
+      left: -15px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+      position: absolute;
+    }
   }
 
   .icon--correct {
-    background-color: lime;
+    right: 30px;
+
+    &:after {
+      background-color: lime;
+    }
   }
 
   .icon--wrong {
-    background-color: red;
-  }
-
-  .icon--2 {
-    right: 15px;
-  }
-
-  .icon--1 {
-    right: 30px;
-  }
-
-  .icon--0 {
-    right: 45px;
+    right: 0;
+    &:after {
+      background-color: red;
+    }
   }
 }

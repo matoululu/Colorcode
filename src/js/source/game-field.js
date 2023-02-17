@@ -95,7 +95,6 @@ class GameField extends HTMLElement {
   winHandler() {
     let resultsCorrect = [];
     let resultsWrong = [];
-    let resultArray = [];
     const guessArray = this.currentArray;
     const solutionArray = this.answerArray;
     const currentField = this.querySelector(`[data-field="${this.currentTurn}"]`).parentNode;
@@ -108,21 +107,18 @@ class GameField extends HTMLElement {
       }
     }
 
-    // add correct and wrong to array
-    resultArray = resultsCorrect.concat(resultsWrong);
 
-    // for each item in array, create span with correct or wrong class and append to current field
-    resultArray.forEach((item, i) => {
-      if (item == '1') {
-        const span = document.createElement('span');
-        span.classList.add('icon', 'icon--correct', `icon--${i}`);
-        currentField.appendChild(span);
-      } else {
-        const span = document.createElement('span');
-        span.classList.add('icon', 'icon--wrong', `icon--${i}`);
-        currentField.appendChild(span);
-      }
-    });
+    const correctSpan = document.createElement('span');
+    correctSpan.classList.add('icon', 'icon--correct');
+    correctSpan.innerHTML = resultsCorrect.length;
+    currentField.appendChild(correctSpan);
+
+
+    const span = document.createElement('span');
+    span.classList.add('icon', 'icon--wrong');
+    span.innerHTML = resultsWrong.length;
+    currentField.appendChild(span);
+
 
     if(resultsCorrect.length === 4) {
       dispatchEvent('game:win');
