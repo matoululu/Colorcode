@@ -13,6 +13,12 @@ class GameField extends HTMLElement {
     this.answerArray = [];
     this.currentTurn = 1;
 
+    this.list = this.querySelector('ul');
+    this.listItems = this.querySelectorAll('li');
+    this.currentSliderScrollPos = -20;
+    this.fieldHeight = 62*2;
+    this.slideMaxWidth = this.listItems * this.fieldHeight;
+
     // Seed random number generator with date
     this.date = new Date().toISOString().slice(0, 10);
     this.chance = new Chance(this.date);
@@ -21,7 +27,11 @@ class GameField extends HTMLElement {
   }
 
   init() {
-    //generate answer array, 6 random numbers between 1 and 6
+
+    // Scroll to top
+    this.list.scrollTo(0, 0);
+
+    //generate answer array, 4 random numbers between 1 and 6
     for (let i = 0; i < 4; i++) {
       this.answerArray.push(this.chance.integer({min: 1, max: 6}));
     }
@@ -31,7 +41,7 @@ class GameField extends HTMLElement {
       if (this.currentArray.length >= 4) this.currentArray.shift();
       this.currentArray.push(e.detail);
 
-      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
+      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"] div`));
     });
 
     window.addEventListener('reset:clicked', () => {
@@ -45,15 +55,14 @@ class GameField extends HTMLElement {
       // Add current array to history array
       this.historyArray.push(this.currentArray);
 
-      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
+      this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"] div`));
       // Check if current array is correct
       this.winHandler();
 
-      // Reset current array
-      this.currentArray = [];
-      this.currentTurn+= 1;
+      if (this.currentTurn == 11) return;
 
-      if (this.currentTurn == 7) return;
+      // Scroll to next slide every 2 turns
+      if (this.currentTurn % 2 == 0 && this.currentTurn != 2) this.scrollNext();
     });
   }
 
@@ -110,10 +119,22 @@ class GameField extends HTMLElement {
     }
 
 
-    if (this.currentTurn == 6) {
+    if (this.currentTurn == 10) {
       dispatchEvent('game:lose');
       return;
     }
+
+    // Reset current array
+    this.currentArray = [];
+    this.currentTurn+= 1;
+  }
+
+  scrollNext() {
+    const newSliderScrollPos = this.currentSliderScrollPos + this.fieldHeight;
+    if (newSliderScrollPos >= this.slideMaxWidth) return;
+
+    this.currentSliderScrollPos = newSliderScrollPos;
+    this.list.scrollTo(0, newSliderScrollPos);
   }
 }
 

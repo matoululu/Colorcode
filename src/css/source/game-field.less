@@ -1,22 +1,35 @@
 game-field {
-  padding: 1rem 0 0;
+  padding: 1rem 0 2.5rem;
   width: 100%;
 
   ul {
     list-style: none;
     font-size: 1.5rem;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    height: 255px;
   }
 
   li {
     display: flex;
-    padding: 5px 0;
     border-radius: 5px;
-    margin: 1.25rem 0;
     width: 100%;
-    background-color: var(--highlight);
-    height: 42px;
     align-items: center;
+    scroll-snap-align: start;
     position: relative;
+    padding-top: 10px;
+
+    div {
+      margin: 0 0 0.75rem 0;
+      position: relative;
+      background-color: var(--highlight);
+      height: 42px;
+      width: 100%;
+      display: flex;
+      padding: 5px 0;
+    }
   }
 
   .input {
@@ -65,7 +78,7 @@ game-field {
 
   .icon {
     position: absolute;
-    top: -15px;
+    top: 0;
     right: 0;
     width: 10px;
     height: 10px;
