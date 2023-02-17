@@ -20,8 +20,10 @@
   --input6: #753BBD;
 }
 
-.nightmode {
-  --bodyBG: #2e222f;
-  --bodyFontColor: #fff;
-  --highlight: rgba(0,0,0,0.2);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bodyBG: #2e222f;
+    --bodyFontColor: #fff;
+    --highlight: rgba(0,0,0,0.2);
+  }
 }
