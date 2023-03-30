@@ -9,7 +9,10 @@ game-field {
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    height: 280px;
+
+    @media @small {
+      height: 280px;
+    }
   }
 
   li {

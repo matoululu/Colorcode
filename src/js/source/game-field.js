@@ -2,7 +2,7 @@
   GameField
 ==============================================================================*/
 
-import { dispatchEvent } from './utils.js';
+import { dispatchEvent, getSaveState, setSaveState } from './utils.js';
 import Chance from 'chance';
 
 class GameField extends HTMLElement {
@@ -11,6 +11,7 @@ class GameField extends HTMLElement {
     this.currentArray = [];
     this.historyArray = [];
     this.answerArray = [];
+    this.scoreArray = [];
     this.currentTurn = 1;
 
     this.list = this.querySelector('ul');
@@ -51,7 +52,7 @@ class GameField extends HTMLElement {
 
       this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
       // Check if current array is correct
-      this.winHandler();
+      this.scoreHandler();
 
       if (this.currentTurn == 11) return;
     });
@@ -59,19 +60,83 @@ class GameField extends HTMLElement {
 
   init(random = null) {
     this.clear();
+    this.loadInitialState();
 
-    if (random) {
-      this.chance = new Chance();
+    setTimeout(() => {
+      if (random) {
+        this.chance = new Chance();
+      } else {
+        this.chance = new Chance(this.date);
+      }
+      // Scroll to top
+      this.list.scrollTo(0, this.currentSliderScrollPos);
+
+      //generate answer array, 4 random numbers between 1 and 6
+      for (let i = 0; i < 4; i++) {
+        this.answerArray.push(this.chance.integer({min: 1, max: 6}));
+      }
+    }, 0);
+  }
+
+  loadInitialState() {
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g,'');
+    const lastVisited = getSaveState('lastVisited');
+
+    if (lastVisited) {
+      const parsedLastVisited = lastVisited.replace(/"/g,'');
+      if (parsedLastVisited == today) {
+        const lastSession = JSON.parse(getSaveState('lastSession'));
+
+        if (lastSession) {
+          this.currentTurn = lastSession.currentTurn;
+          this.historyArray = lastSession.historyArray;
+          this.currentSliderScrollPos = lastSession.slidePosition;
+          this.scoreArray = lastSession.resultsArray;
+
+          if (this.currentTurn == 10) {
+            console.log('game:lose')
+            dispatchEvent('game:lose');
+            return;
+          } else {
+            console.log('game:start')
+            dispatchEvent('game:start');
+          }
+
+          this.historyArray.forEach((array, index) => {
+            this.displayArray(array, this.querySelector(`[data-field="${index + 1}"]`));
+          });
+
+          this.scoreArray.forEach((result, index) => {
+            console.log(this.scoreArray[index].correct)
+            const currentField = this.querySelector(`[data-field="${index + 1}"]`).parentNode;
+
+            const correctSpan = document.createElement('span');
+            correctSpan.classList.add('icon', 'icon--correct');
+            correctSpan.innerHTML = this.scoreArray[index].correct;
+            currentField.appendChild(correctSpan);
+
+            const wrongSpan = document.createElement('span');
+            wrongSpan.classList.add('icon', 'icon--wrong');
+            wrongSpan.innerHTML = this.scoreArray[index].wrong;
+            currentField.appendChild(wrongSpan);
+          });
+        }
+      }
     } else {
-      this.chance = new Chance(this.date);
+      return;
     }
-    // Scroll to top
-    this.list.scrollTo(0, 0);
+  }
 
-    //generate answer array, 4 random numbers between 1 and 6
-    for (let i = 0; i < 4; i++) {
-      this.answerArray.push(this.chance.integer({min: 1, max: 6}));
-    }
+  setCurrentState() {
+    const lastSession = {
+      currentTurn: this.currentTurn,
+      currentArray: this.currentArray,
+      historyArray: this.historyArray,
+      resultsArray: this.scoreArray,
+      slidePosition: this.currentSliderScrollPos
+    };
+
+    setSaveState('lastSession', lastSession);
   }
 
   inputClicked(value) {
@@ -79,7 +144,6 @@ class GameField extends HTMLElement {
   }
 
   displayArray(array, target) {
-    console.log(target)
     // remove all children from target
     while (target.firstChild) {
       target.removeChild(target.firstChild);
@@ -92,7 +156,7 @@ class GameField extends HTMLElement {
     });
   }
 
-  winHandler() {
+  scoreHandler() {
     let resultsCorrect = [];
     let resultsWrong = [];
     const guessArray = this.currentArray;
@@ -107,24 +171,26 @@ class GameField extends HTMLElement {
       }
     }
 
-
     const correctSpan = document.createElement('span');
     correctSpan.classList.add('icon', 'icon--correct');
     correctSpan.innerHTML = resultsCorrect.length;
     currentField.appendChild(correctSpan);
-
 
     const span = document.createElement('span');
     span.classList.add('icon', 'icon--wrong');
     span.innerHTML = resultsWrong.length;
     currentField.appendChild(span);
 
+    // Add resultsCorrect and resultsWrong to scoreArray
+    this.scoreArray.push({
+      correct: resultsCorrect.length,
+      wrong: resultsWrong.length
+    });
 
     if(resultsCorrect.length === 4) {
       dispatchEvent('game:win');
       return;
     }
-
 
     if (this.currentTurn == 10) {
       dispatchEvent('game:lose');
@@ -137,6 +203,10 @@ class GameField extends HTMLElement {
     // Reset current array
     this.currentArray = [];
     this.currentTurn+= 1;
+
+    setTimeout(() => {
+      this.setCurrentState();
+    }, 0);
   }
 
   scrollNext() {
