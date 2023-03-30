@@ -26,11 +26,6 @@ class GameField extends HTMLElement {
 
     this.init();
 
-    // Listen for game:endless event
-    window.addEventListener('game:endless', () => {
-      this.init(true);
-    });
-
     window.addEventListener('input:clicked', e => {
       // Add input to current array and display it in this.current, ensure array has a max size of 6
       if (this.currentArray.length >= 4) this.currentArray.shift();
@@ -58,17 +53,13 @@ class GameField extends HTMLElement {
     });
   }
 
-  init(random = null) {
+  init() {
     this.clear();
     this.loadInitialState();
 
     setTimeout(() => {
-      if (random) {
-        this.chance = new Chance();
-      } else {
-        this.chance = new Chance(this.date);
-      }
-      // Scroll to top
+      this.chance = new Chance(this.date);
+
       this.list.scrollTo(0, this.currentSliderScrollPos);
 
       //generate answer array, 4 random numbers between 1 and 6
@@ -84,6 +75,7 @@ class GameField extends HTMLElement {
 
     if (lastVisited) {
       const parsedLastVisited = lastVisited.replace(/"/g,'');
+
       if (parsedLastVisited == today) {
         const lastSession = JSON.parse(getSaveState('lastSession'));
 
@@ -94,20 +86,17 @@ class GameField extends HTMLElement {
           this.scoreArray = lastSession.resultsArray;
 
           if (this.currentTurn == 10) {
-            console.log('game:lose')
             dispatchEvent('game:lose');
-            return;
           } else {
-            console.log('game:start')
             dispatchEvent('game:start');
           }
 
           this.historyArray.forEach((array, index) => {
+            console.log('-')
             this.displayArray(array, this.querySelector(`[data-field="${index + 1}"]`));
           });
 
           this.scoreArray.forEach((result, index) => {
-            console.log(this.scoreArray[index].correct)
             const currentField = this.querySelector(`[data-field="${index + 1}"]`).parentNode;
 
             const correctSpan = document.createElement('span');
@@ -187,25 +176,25 @@ class GameField extends HTMLElement {
       wrong: resultsWrong.length
     });
 
-    if(resultsCorrect.length === 4) {
-      dispatchEvent('game:win');
-      return;
-    }
-
-    if (this.currentTurn == 10) {
-      dispatchEvent('game:lose');
-      return;
-    }
-
     // Scroll to next slide every 2 turns
     if (this.currentTurn != 1) this.scrollNext();
 
-    // Reset current array
-    this.currentArray = [];
-    this.currentTurn+= 1;
-
     setTimeout(() => {
       this.setCurrentState();
+
+      if(resultsCorrect.length === 4) {
+        dispatchEvent('game:win');
+        return;
+      }
+
+      if (this.currentTurn == 10) {
+        dispatchEvent('game:lose');
+        return;
+      }
+
+      // Reset current array
+      this.currentArray = [];
+      this.currentTurn+= 1;
     }, 0);
   }
 
