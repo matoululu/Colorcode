@@ -15,6 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
     slidePosition: -20
   }
 
+  if (lastVisited) {
+    if (lastVisited !== today) {
+      setSaveState('lastVisited', today);
+      setSaveState('lastSession', defaultState);
+      dispatchEvent('game:start');
+
+      return;
+    }
+  } else {
+    setSaveState('lastVisited', today);
+    setSaveState('lastSession', defaultState);
+  }
+
   if (lastSession) {
     lastSession.resultsArray.forEach(result => {
       if (result.correct == 4) {
@@ -29,13 +42,5 @@ document.addEventListener('DOMContentLoaded', function() {
     dispatchEvent('game:start');
   }
 
-  if (lastVisited) {
-    if (lastVisited !== today) {
-      setSaveState('lastVisited', today);
-      setSaveState('lastSession', defaultState);
-    }
-  } else {
-    setSaveState('lastVisited', today);
-    setSaveState('lastSession', defaultState);
-  }
+
 });
