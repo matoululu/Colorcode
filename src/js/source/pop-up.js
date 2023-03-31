@@ -7,18 +7,12 @@ import { dispatchEvent } from './utils.js';
 class PopUp extends HTMLElement {
   constructor() {
     super();
-    this.button = this.querySelector('[data-play]');
+    this.play = this.querySelectorAll('[data-play]');
     this.refresh = this.querySelectorAll('[data-refresh]');
     this.popupScreen = this.querySelectorAll('.popup-screen');
 
-    this.button.addEventListener('click', () => {
-      this.classList.add('hidden');
-      dispatchEvent('inputs:enable');
-    });
-
-    this.refresh.forEach(button => {
+    this.play.forEach(button => {
       button.addEventListener('click', () => {
-        dispatchEvent('game:endless');
         this.classList.add('hidden');
         dispatchEvent('inputs:enable');
       });
@@ -36,8 +30,12 @@ class PopUp extends HTMLElement {
     });
 
     window.addEventListener('game:start', () => {
-      console.log('hey')
       this.displayScreen('welcome');
+      dispatchEvent('inputs:disable');
+    });
+
+    window.addEventListener('game:help', () => {
+      this.displayScreen('help');
       dispatchEvent('inputs:disable');
     });
   }

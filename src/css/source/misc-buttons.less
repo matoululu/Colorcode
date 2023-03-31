@@ -1,0 +1,22 @@
+misc-buttons {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+
+  @media @small {
+    right: 30px;
+    top: 30px;
+  }
+
+  & button {
+    border: 0;
+    background-color: transparent;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

@@ -2,6 +2,7 @@
 import InputField from './source/input-field.js';
 import GameField from './source/game-field.js';
 import PopUp from './source/pop-up.js';
+import MiscButtons from './source/misc-buttons.js';
 import { getSaveState, setSaveState, dispatchEvent } from './source/utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
