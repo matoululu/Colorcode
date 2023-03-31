@@ -36,6 +36,7 @@ class PopUp extends HTMLElement {
     });
 
     window.addEventListener('game:start', () => {
+      console.log('hey')
       this.displayScreen('welcome');
       dispatchEvent('inputs:disable');
     });

@@ -28,7 +28,7 @@ class GameField extends HTMLElement {
 
     window.addEventListener('input:clicked', e => {
       // Add input to current array and display it in this.current, ensure array has a max size of 6
-      if (this.currentArray.length >= 4) this.currentArray.shift();
+      if (this.currentArray.length >= 4) return;
       this.currentArray.push(e.detail);
 
       this.displayArray(this.currentArray, this.querySelector(`[data-field="${this.currentTurn}"]`));
@@ -92,7 +92,6 @@ class GameField extends HTMLElement {
           }
 
           this.historyArray.forEach((array, index) => {
-            console.log('-')
             this.displayArray(array, this.querySelector(`[data-field="${index + 1}"]`));
           });
 

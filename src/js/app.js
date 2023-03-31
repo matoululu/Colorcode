@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const today = new Date().toISOString().slice(0, 10).replace(/-/g,'');
   const lastVisited = getSaveState('lastVisited');
   const lastSession = JSON.parse(getSaveState('lastSession'));
+  const defaultState =  {
+    currentTurn: 1,
+    historyArray: [],
+    resultsArray: [],
+    slidePosition: -20
+  }
 
   if (lastSession) {
     lastSession.resultsArray.forEach(result => {
@@ -24,15 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   if (lastVisited) {
-    if (lastVisited !== today) setSaveState('lastVisited', today);
-  } else {
-    const defaultState =  {
-      currentTurn: 1,
-      historyArray: [],
-      resultsArray: [],
-      slidePosition: -20
+    if (lastVisited !== today) {
+      setSaveState('lastVisited', today);
+      setSaveState('lastSession', defaultState);
     }
-
+  } else {
     setSaveState('lastVisited', today);
     setSaveState('lastSession', defaultState);
   }

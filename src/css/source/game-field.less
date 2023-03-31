@@ -1,6 +1,7 @@
 game-field {
   padding: 1rem 0 2.5rem;
   width: 100%;
+  height: 70%;
 
   ul {
     list-style: none;
@@ -11,7 +12,7 @@ game-field {
     -webkit-overflow-scrolling: touch;
 
     @media @small {
-      height: 280px;
+      height: 100%;
     }
   }
 
@@ -94,6 +95,7 @@ game-field {
       left: -15px;
       width: 10px;
       height: 10px;
+      border: 1px solid var(--highlight);
       border-radius: 50%;
       display: block;
       position: absolute;
@@ -101,17 +103,17 @@ game-field {
   }
 
   .icon--correct {
-    right: 30px;
+    right: 42px;
 
     &:after {
-      background-color: lime;
+      background-color: #6abd6a;
     }
   }
 
   .icon--wrong {
-    right: 0;
+    right: 12px;
     &:after {
-      background-color: red;
+      background-color: #ed060a;
     }
   }
 }
