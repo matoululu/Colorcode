@@ -7,7 +7,7 @@ import { getSaveState, setSaveState, dispatchEvent } from './source/utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   const today = new Date().toISOString().slice(0, 10).replace(/-/g,'');
-  const lastVisited = getSaveState('lastVisited');
+  const lastVisited = JSON.parse(getSaveState('lastVisited'));
   const lastSession = JSON.parse(getSaveState('lastSession'));
   const defaultState =  {
     currentTurn: 1,
@@ -17,31 +17,32 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   if (lastVisited) {
-    if (lastVisited !== today) {
+    if (lastVisited != today) {
       setSaveState('lastVisited', today);
       setSaveState('lastSession', defaultState);
       dispatchEvent('game:start');
 
       return;
+    } else if (lastSession) {
+      lastSession.resultsArray.forEach(result => {
+        if (result.correct == 4) {
+          dispatchEvent('game:win');
+        } else if (lastSession.resultsArray.length == 10) {
+          dispatchEvent('game:lose');
+        } else {
+          dispatchEvent('game:start');
+        }
+      });
+    } else {
+      setSaveState('lastVisited', today);
+      setSaveState('lastSession', defaultState);
+
+      dispatchEvent('game:start');
     }
   } else {
     setSaveState('lastVisited', today);
     setSaveState('lastSession', defaultState);
-  }
 
-  if (lastSession) {
-    lastSession.resultsArray.forEach(result => {
-      if (result.correct == 4) {
-        dispatchEvent('game:win');
-      } else if (lastSession.resultsArray.length == 10) {
-        dispatchEvent('game:lose');
-      } else {
-        dispatchEvent('game:start');
-      }
-    });
-  } else {
     dispatchEvent('game:start');
   }
-
-
 });
