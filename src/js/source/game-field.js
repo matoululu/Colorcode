@@ -182,12 +182,16 @@ class GameField extends HTMLElement {
       this.setCurrentState();
 
       if(resultsCorrect.length === 4) {
-        dispatchEvent('game:win');
+        dispatchEvent('game:win', {
+          solution: this.answerArray,
+        });
         return;
       }
 
       if (this.currentTurn == 10) {
-        dispatchEvent('game:lose');
+        dispatchEvent('game:lose', {
+          solution: this.answerArray,
+        });
         return;
       }
 

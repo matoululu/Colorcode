@@ -17,6 +17,7 @@ pop-up {
   border-radius: 5px;
   box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
   padding: 1.5rem;
+  overflow: hidden;
 
   a,
   a:visited {
@@ -40,5 +41,67 @@ pop-up {
     cursor: pointer;
     margin-top: 1.5rem;
     font-weight: 600;
+  }
+
+  .solution {
+    display: block;
+    margin: 0.5rem -14px 0.5rem 0;
+  }
+
+  .input {
+    width: calc(25% - 14px);
+    height: 32px;
+    margin: 0 14px 0 0;
+    border-radius: 5px;
+    position: relative;
+    display: inline-block;
+
+    &:after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      position: absolute;
+      top: -9px;
+      right: -9px;
+    }
+  }
+
+  .input--1 {
+    background-color: var(--input1);
+  }
+
+  .input--2 {
+    background-color: var(--input2);
+  }
+
+  .input--3 {
+    background-color: var(--input3);
+  }
+
+  .input--4 {
+    background-color: var(--input4);
+  }
+
+  .input--5 {
+    background-color: var(--input5);
+  }
+
+  .input--6 {
+    background-color: var(--input6);
+  }
+
+  .input-count--0 {
+    animation-delay: 0s;
+  }
+  .input-count--1 {
+    animation-delay: 0.5s;
+  }
+  .input-count--2 {
+    animation-delay: 1s;
+  }
+  .input-count--3 {
+    animation-delay: 1.5s;
   }
 }
