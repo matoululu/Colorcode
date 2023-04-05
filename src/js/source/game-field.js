@@ -2,8 +2,7 @@
   GameField
 ==============================================================================*/
 
-import { dispatchEvent, getSaveState, setSaveState } from './utils.js';
-import Chance from 'chance';
+import { dispatchEvent, getSaveState, setSaveState, getSolution } from './utils.js';
 
 class GameField extends HTMLElement {
   constructor() {
@@ -19,10 +18,6 @@ class GameField extends HTMLElement {
     this.currentSliderScrollPos = -20;
     this.fieldHeight = 62;
     this.slideMaxWidth = this.listItems * this.fieldHeight;
-
-    // Seed random number generator with date
-    this.date = new Date().toISOString().slice(0, 10);
-    this.chance;
 
     this.init();
 
@@ -58,14 +53,8 @@ class GameField extends HTMLElement {
     this.loadInitialState();
 
     setTimeout(() => {
-      this.chance = new Chance(this.date);
-
+      this.answerArray = getSolution();
       this.list.scrollTo(0, this.currentSliderScrollPos);
-
-      //generate answer array, 4 random numbers between 1 and 6
-      for (let i = 0; i < 4; i++) {
-        this.answerArray.push(this.chance.integer({min: 1, max: 6}));
-      }
     }, 0);
   }
 
