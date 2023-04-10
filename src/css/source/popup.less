@@ -105,3 +105,20 @@ pop-up {
     animation-delay: 1.5s;
   }
 }
+
+[data-share] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  svg {
+    margin-left: 1rem;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: var(--input5);
+  }
+}
