@@ -58,23 +58,41 @@ class PopUp extends HTMLElement {
     // Loop through solutions and add solution to screen
     if (context === 'win' || context === 'lose') {
       const session = JSON.parse(getSaveState('lastSession'));
-      const tries = session.currentTurn;
+      const turnCount = session.currentTurn;
+      let turnText = 'turns';
+      if (turnCount === 1) turnText = 'turn';
+      let shareMsg;
 
+      if (context === 'win') {
+        shareMsg = `I cracked today's Colorcodes in ${turnCount} ${turnText}! Can you beat me?`;
+      } else {
+        shareMsg = `I couldn't crack today's Colorcodes! Can you?`;
+      }
 
-      // loop thru share buttons and add event listener
+      const share = {
+        title: 'Colorcodes',
+        text: shareMsg,
+        url: 'https://matoululu.github.io/colorcodes/',
+      };
+
       this.shareBtns.forEach(button => {
         button.addEventListener('click', () => {
-          navigator.clipboard.writeText(`I just played Colorcodes and got it in ${tries} turn(s)! Can you beat me? https://matoululu.github.io/colorcodes/`);
-          const spanText = button.querySelector('span');
-          spanText.innerHTML = 'Copied!';
-          setTimeout(() => {
-            spanText.innerHTML = 'Share';
-          }, 2000);
 
+          if (navigator.share) {
+            navigator.share(share);
+          } else {
+            navigator.clipboard.writeText(`${share.text} | ${share.url}`);
+
+            const spanText = button.querySelector('span');
+            spanText.innerHTML = 'Copied!';
+            setTimeout(() => {
+              spanText.innerHTML = 'Share';
+            }, 2000);
+          }
         });
       });
 
-      this.tries.innerHTML = tries;
+      this.tries.innerHTML = turnCount;
       this.solutions.forEach(solutionEl => {
         solutionEl.innerHTML = '';
 
