@@ -92,7 +92,7 @@ class PopUp extends HTMLElement {
         });
       });
 
-      this.tries.innerHTML = turnCount;
+      this.tries.innerHTML = `${turnCount} ${turnText}`;
       this.solutions.forEach(solutionEl => {
         solutionEl.innerHTML = '';
 
