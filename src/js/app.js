@@ -6,6 +6,7 @@ import MiscButtons from './source/misc-buttons.js';
 import { getSaveState, setSaveState, dispatchEvent } from './source/utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
+  const maxTurns = 12;
   const today = new Date().toISOString().slice(0, 10).replace(/-/g,'');
   const lastVisited = JSON.parse(getSaveState('lastVisited'));
   const lastSession = JSON.parse(getSaveState('lastSession'));
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
       lastSession.resultsArray.forEach(result => {
         if (result.correct == 4) {
           dispatchEvent('game:win');
-        } else if (lastSession.resultsArray.length == 10) {
+        } else if (lastSession.resultsArray.length <= maxTurns) {
           dispatchEvent('game:lose');
         } else {
           dispatchEvent('game:start');

@@ -13,6 +13,8 @@ class GameField extends HTMLElement {
     this.scoreArray = [];
     this.currentTurn = 1;
 
+    this.maxTurns = 12;
+
     this.list = this.querySelector('ul');
     this.listItems = this.querySelectorAll('li');
     this.currentSliderScrollPos = -20;
@@ -44,7 +46,7 @@ class GameField extends HTMLElement {
       // Check if current array is correct
       this.scoreHandler();
 
-      if (this.currentTurn == 11) return;
+      if (this.currentTurn == (this.maxTurns + 1)) return;
     });
   }
 
@@ -74,7 +76,7 @@ class GameField extends HTMLElement {
           this.currentSliderScrollPos = lastSession.slidePosition;
           this.scoreArray = lastSession.resultsArray;
 
-          if (this.currentTurn == 10) {
+          if (this.currentTurn == this.maxTurns) {
             dispatchEvent('game:lose');
           } else {
             dispatchEvent('game:start');
@@ -177,7 +179,7 @@ class GameField extends HTMLElement {
         return;
       }
 
-      if (this.currentTurn == 10) {
+      if (this.currentTurn == this.maxTurns) {
         dispatchEvent('game:lose', {
           solution: this.answerArray,
         });
