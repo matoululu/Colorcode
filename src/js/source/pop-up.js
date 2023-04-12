@@ -22,19 +22,17 @@ class PopUp extends HTMLElement {
       });
     });
 
-    //listen for game:win and game:lost event
-    window.addEventListener('game:win', e => {
+    window.addEventListener('game:start', () => {
+      this.displayScreen('welcome');
+    });
+
+    window.addEventListener('game:win', () => {
       this.displayScreen('win');
       dispatchEvent('inputs:disable');
     });
 
-    window.addEventListener('game:lose', e => {
+    window.addEventListener('game:lose', () => {
       this.displayScreen('lose');
-      dispatchEvent('inputs:disable');
-    });
-
-    window.addEventListener('game:start', () => {
-      this.displayScreen('welcome');
       dispatchEvent('inputs:disable');
     });
 
