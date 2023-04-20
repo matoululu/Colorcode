@@ -70,7 +70,7 @@ class PopUp extends HTMLElement {
       const share = {
         title: 'Colorcodes',
         text: shareMsg,
-        url: 'https://matoululu.github.io/colorcodes/',
+        url: 'https://colorcodes.xyz/',
       };
 
       this.shareBtns.forEach(button => {
