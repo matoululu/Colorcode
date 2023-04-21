@@ -18,7 +18,6 @@ class PopUp extends HTMLElement {
     this.play.forEach(button => {
       button.addEventListener('click', () => {
         this.classList.add('hidden');
-        dispatchEvent('inputs:enable');
       });
     });
 
@@ -28,17 +27,14 @@ class PopUp extends HTMLElement {
 
     window.addEventListener('game:win', () => {
       this.displayScreen('win');
-      dispatchEvent('inputs:disable');
     });
 
     window.addEventListener('game:lose', () => {
       this.displayScreen('lose');
-      dispatchEvent('inputs:disable');
     });
 
     window.addEventListener('game:help', () => {
       this.displayScreen('help');
-      dispatchEvent('inputs:disable');
     });
   }
 
