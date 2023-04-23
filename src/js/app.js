@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
       lastSession.resultsArray.forEach(result => {
         if (result.correct == 4) {
           dispatchEvent('game:win');
-        } else if (lastSession.resultsArray.length <= maxTurns) {
+        } else if (lastSession.resultsArray.length >= maxTurns) {
           dispatchEvent('game:lose');
         } else {
           dispatchEvent('game:start');

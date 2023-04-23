@@ -71,8 +71,8 @@ class GameField extends HTMLElement {
         const lastSession = JSON.parse(getSaveState('lastSession'));
 
         if (lastSession) {
-          this.currentTurn = lastSession.currentTurn;
           this.historyArray = lastSession.historyArray;
+          this.currentTurn = lastSession.historyArray.length + 1;
           this.currentSliderScrollPos = lastSession.slidePosition;
           this.scoreArray = lastSession.resultsArray;
 
