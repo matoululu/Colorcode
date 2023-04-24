@@ -62,15 +62,15 @@ class PopUp extends HTMLElement {
     if (context === 'win' || context === 'lose') {
       const session = JSON.parse(getSaveState('lastSession'));
       const turnCount = session.currentTurn;
-      const resultsArray = session.resultsArray;
       let turnText = 'turns';
       if (turnCount === 1) turnText = 'turn';
-      let shareMsg = '';
+      let shareMsg;
 
-      // loop through history and add results to shareMsg
-      resultsArray.forEach((result) => {
-        shareMsg += `🟢 ${result.correct} 🔴 ${result.wrong} \n`;
-      });
+      if (context === 'win') {
+        shareMsg = `I cracked today's Colorcodes in ${turnCount} ${turnText}! Can you beat me?`;
+      } else {
+        shareMsg = `I couldn't crack today's Colorcodes! Can you?`;
+      }
 
       const share = {
         title: 'Colorcodes',
@@ -84,7 +84,7 @@ class PopUp extends HTMLElement {
           if (navigator.share) {
             navigator.share(share);
           } else {
-            navigator.clipboard.writeText(`${share.text} \n Try out ${share.url}`);
+            navigator.clipboard.writeText(`${share.text} | ${share.url}`);
 
             const spanText = button.querySelector('span');
             spanText.innerHTML = 'Copied!';
