@@ -28,9 +28,5 @@ export function getSolution() {
 }
 
 export function logger(message) {
-  console.log(`
-    Colorcodes log: \n
-    ----------------------------- \n
-    ${message} \n
-  `);
+  console.log(`Colorcodes log: ${message}`);
 }
