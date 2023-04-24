@@ -26,3 +26,11 @@ export function getSolution() {
 
   return solutionArray;
 }
+
+export function logger(message) {
+  console.log(`
+    Colorcodes log: \n
+    ----------------------------- \n
+    ${message} \n
+  `);
+}

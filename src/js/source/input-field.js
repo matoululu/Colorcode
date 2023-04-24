@@ -2,7 +2,7 @@
   InputField
 ==============================================================================*/
 
-import { dispatchEvent } from './utils.js';
+import { dispatchEvent, logger } from './utils.js';
 
 class InputField extends HTMLElement {
   constructor() {
@@ -29,24 +29,6 @@ class InputField extends HTMLElement {
       dispatchEvent('submit:clicked');
     });
 
-    //set up click event for key 1-6
-    window.addEventListener('keydown', e => {
-      // 1 thru 6
-      if (e.key >= 1 && e.key <= 6) {
-        this.inputClicked(e.key);
-      }
-
-      // Submit
-      if (e.key === 'Enter') {
-        dispatchEvent('submit:clicked');
-      }
-
-      // Reset
-      if (e.key === 'Backspace') {
-        dispatchEvent('reset:clicked');
-      }
-    });
-
     //listen for inputs:disable event
     window.addEventListener('inputs:disable', () => {
       this.disableInputs();
@@ -58,11 +40,31 @@ class InputField extends HTMLElement {
     });
   }
 
+  handleKeys(e) {
+    // 1 thru 6
+    if (e.key >= 1 && e.key <= 6) {
+      this.inputClicked(e.key);
+    }
+
+    // Submit
+    if (e.key === 'Enter') {
+      dispatchEvent('submit:clicked');
+    }
+
+    // Reset
+    if (e.key === 'Backspace') {
+      dispatchEvent('reset:clicked');
+    }
+  }
+
   inputClicked(value) {
     dispatchEvent('input:clicked', value);
   }
 
   disableInputs() {
+    logger('Inputs disabled');
+    window.removeEventListener('keydown', this.handleKeys.bind(this));
+
     this.buttons.forEach(input => {
       // set disabled attribute
       input.setAttribute('disabled', true);
@@ -70,6 +72,9 @@ class InputField extends HTMLElement {
   }
 
   enableInputs() {
+    logger('Inputs enabled');
+    window.addEventListener('keydown', this.handleKeys.bind(this));
+
     this.buttons.forEach(input => {
       // remove disabled attribute
       input.removeAttribute('disabled');

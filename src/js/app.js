@@ -5,6 +5,10 @@ import PopUp from './source/pop-up.js';
 import MiscButtons from './source/misc-buttons.js';
 import { getSaveState, setSaveState, dispatchEvent } from './source/utils.js';
 
+const states = {
+  inputs: 'disabled',
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const maxTurns = 12;
   const today = new Date().toISOString().slice(0, 10).replace(/-/g,'');

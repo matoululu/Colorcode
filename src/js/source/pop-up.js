@@ -2,7 +2,7 @@
   PopUp
 ==============================================================================*/
 
-import { dispatchEvent, getSolution, getSaveState } from './utils.js';
+import { dispatchEvent, getSolution, getSaveState, logger } from './utils.js';
 
 class PopUp extends HTMLElement {
   constructor() {
@@ -17,23 +17,32 @@ class PopUp extends HTMLElement {
 
     this.play.forEach(button => {
       button.addEventListener('click', () => {
+        logger('Play button clicked');
+        dispatchEvent('inputs:enable');
         this.classList.add('hidden');
       });
     });
 
     window.addEventListener('game:start', () => {
+      logger('Game has started');
       this.displayScreen('welcome');
     });
 
     window.addEventListener('game:win', () => {
+      logger('Game has been won');
+      dispatchEvent('inputs:disable');
       this.displayScreen('win');
     });
 
     window.addEventListener('game:lose', () => {
+      logger('Game has been lost');
+      dispatchEvent('inputs:disable');
       this.displayScreen('lose');
     });
 
     window.addEventListener('game:help', () => {
+      logger('Help window opened');
+      dispatchEvent('inputs:disable');
       this.displayScreen('help');
     });
   }
@@ -53,15 +62,15 @@ class PopUp extends HTMLElement {
     if (context === 'win' || context === 'lose') {
       const session = JSON.parse(getSaveState('lastSession'));
       const turnCount = session.currentTurn;
+      const resultsArray = session.resultsArray;
       let turnText = 'turns';
       if (turnCount === 1) turnText = 'turn';
-      let shareMsg;
+      let shareMsg = '';
 
-      if (context === 'win') {
-        shareMsg = `I cracked today's Colorcodes in ${turnCount} ${turnText}! Can you beat me?`;
-      } else {
-        shareMsg = `I couldn't crack today's Colorcodes! Can you?`;
-      }
+      // loop through history and add results to shareMsg
+      resultsArray.forEach((result) => {
+        shareMsg += `🟢 ${result.correct} 🔴 ${result.wrong} \n`;
+      });
 
       const share = {
         title: 'Colorcodes',
@@ -75,7 +84,7 @@ class PopUp extends HTMLElement {
           if (navigator.share) {
             navigator.share(share);
           } else {
-            navigator.clipboard.writeText(`${share.text} | ${share.url}`);
+            navigator.clipboard.writeText(`${share.text} \n Try out ${share.url}`);
 
             const spanText = button.querySelector('span');
             spanText.innerHTML = 'Copied!';
