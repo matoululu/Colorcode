@@ -10,9 +10,11 @@ game-field {
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    max-height: 65vh;
 
     @media @small {
       height: 100%;
+      max-height: none;
     }
   }
 
